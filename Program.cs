@@ -12,10 +12,13 @@ namespace MiniBank
         {
             //test 
             List<BankAccount> minibank = new List<BankAccount>();
+            List<Transaction> minitransaction = new List<Transaction>();
             BankManager a = new BankManager();
             a.AddNewBankAccount(minibank);
+            a.Deposit(minitransaction,minibank);
+            minitransaction[0].inlichsugiaodich();
+            Console.WriteLine();
             a.find_account_number(minibank);
-            a.AddNewBankAccount(minibank);
         }
     }
 }
