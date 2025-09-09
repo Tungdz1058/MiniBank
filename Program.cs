@@ -15,8 +15,14 @@ namespace MiniBank
             List<Transaction> minitransaction = new List<Transaction>();
             BankManager a = new BankManager();
             a.AddNewBankAccount(minibank);
-            a.Deposit(minitransaction,minibank);
-            minitransaction[0].inlichsugiaodich();
+            a.AddNewBankAccount(minibank);
+            a.AddNewBankAccount(minibank);
+            a.monthlyinterest(minitransaction, minibank, 0.01, 10);
+            foreach(var b in minitransaction)
+            {
+                b.inlichsugiaodich();
+                Console.WriteLine();
+            }
             Console.WriteLine();
             a.find_account_number(minibank);
         }
