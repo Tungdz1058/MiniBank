@@ -28,7 +28,7 @@ namespace MiniBank.AccountType
         {
             try
             {
-                if (ballance - amount - fee > 0)
+                if (ballance - amount - fee >= 0)
                 {
                     ballance -= (amount + fee);
                     Console.WriteLine($"rut thanh cong {amount} so du con lai trong tai khoan la {ballance}");
