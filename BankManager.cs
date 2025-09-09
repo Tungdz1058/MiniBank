@@ -12,7 +12,16 @@ namespace MiniBank
     public class BankManager
     {
 
-
+        public int FindAccount(List<BankAccount> minibank,string temp)
+        {
+            int count = 0;
+            foreach(var a in minibank)
+            {
+                if (a.number_account == temp) break;
+                count++;
+            }
+            return count;
+        }
         //method them BankAccount tuy theo loai
 
         public void AddNewBankAccount(List<BankAccount> minibank)
@@ -52,7 +61,9 @@ namespace MiniBank
                         double bal1 = double.Parse(Console.ReadLine());
                         Console.Write("vui long nhap ngay khoi tao MM/dd//yyyy : ");
                         DateTime date1 = DateTime.Parse(Console.ReadLine());
-                        minibank.Add(new SavingsAcount(ID1, name1, bal1, date1, 0.01));
+                        Console.Write("vui long nhap lai suat hang thang : ");
+                        double interest = double.Parse(Console.ReadLine());
+                        minibank.Add(new SavingsAcount(ID1, name1, bal1, date1, interest));
                         Console.WriteLine("Them tai khoan thanh cong!");
                         break;
                     case 2:
@@ -71,9 +82,11 @@ namespace MiniBank
                         string name2 = Console.ReadLine();
                         Console.Write("vui long nhap so tien goc trong tai khoan (so tien phai >= 0): ");
                         double bal2 = double.Parse(Console.ReadLine());
-                        Console.Write("vui long nhap ngay khoi tao MM/dd//yyyy : ");
+                        Console.Write("vui long nhap ngay khoi tao : ");
                         DateTime date2 = DateTime.Parse(Console.ReadLine());
-                        minibank.Add(new CheckingAccount(ID2, name2, bal2, date2, 10000));
+                        Console.Write("vui long nhap phi dich vu : ");
+                        double fee = double.Parse(Console.ReadLine());
+                        minibank.Add(new CheckingAccount(ID2, name2, bal2, date2, fee));
                         Console.WriteLine("Them tai khoan thanh cong!");
                         break;
                     case 3:
@@ -92,7 +105,7 @@ namespace MiniBank
                         string name3 = Console.ReadLine();
                         Console.Write("vui long nhap so tien goc trong tai khoan (so tien phai >= 0): ");
                         double bal3 = double.Parse(Console.ReadLine());
-                        Console.Write("vui long nhap ngay khoi tao MM/dd//yyyy : ");
+                        Console.Write("vui long nhap ngay khoi tao : ");
                         DateTime date3 = DateTime.Parse(Console.ReadLine());
                         minibank.Add(new CreditCard(ID3, name3, bal3, date3, 10000, 0.01));
                         Console.WriteLine("Them tai khoan thanh cong!");
@@ -134,6 +147,23 @@ namespace MiniBank
         }
 
         //thuc hien deposit/withdraw -> ghi transaction
+
+        public void Deposit(List<Transaction> minitransaction,List<BankAccount> minibank)
+        {
+            Console.WriteLine("chon so tai khoan ban muon thuc hien nap tien : ");
+            foreach(var a in minibank)
+            {
+                Console.WriteLine(a.ToString());
+                Console.WriteLine();
+            }
+            string temp = Console.ReadLine();
+            Console.Write("nhap so tien ban muon nap vao : ");
+            double res = double.Parse(Console.ReadLine());
+            minibank[FindAccount(minibank,temp)].Deposit(res);
+            minitransaction.Add(new Transaction("DES-101", temp, "Deposit", res, DateTime.Now, "Nap vao tai khoan"));
+        }
+
+
     }
 }
 
