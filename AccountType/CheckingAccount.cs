@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +8,10 @@ using MiniBank.Interfaces;
 
 namespace MiniBank.AccountType
 {
-    public class CheckingAccount : BankAccount, FeeDeductible
+    public class CheckingAccount : BankAccount, FeeDeductible 
     {
         public double fee { get; protected set; }
-        protected CheckingAccount(string number_account, string own_name, double ballance, DateTime created_at,double fee) : base(number_account, own_name, ballance, created_at)
+        public CheckingAccount(string number_account, string own_name, double ballance, DateTime created_at,double fee) : base(number_account, own_name, ballance, created_at)
         {
             this.fee = fee;
         }
