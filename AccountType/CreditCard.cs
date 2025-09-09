@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
@@ -9,7 +9,7 @@ using MiniBank.Interfaces;
 
 namespace MiniBank.AccountType
 {
-    public class CreditCard : BankAccount,IInterestBearing,FeeDeductible
+    public class CreditCard : BankAccount,IInterestBearing,FeeDeductible 
     {
         private double creditlimit = -2000000.0;
         private double fee { get; set; }
@@ -33,7 +33,10 @@ namespace MiniBank.AccountType
                 ballance -= Math.Abs(ballance) * interest;
             }
         }
-
+        public override void Deposit(double amount)
+        {
+            ballance += amount;
+        }
         public override void Withdraw(double amount)
         {
             try
