@@ -6,6 +6,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using MiniBank.AccountType;
+using MiniBank.Interfaces;
 
 namespace MiniBank
 {
@@ -163,6 +164,36 @@ namespace MiniBank
             minitransaction.Add(new Transaction("DES-101", temp, "Deposit", res, DateTime.Now, "Nap vao tai khoan"));
         }
 
+        public void Withdraw(List<Transaction> minitransaction, List<BankAccount> minibank)
+        {
+            Console.WriteLine("chon so tai khoan ban muon thuc hien rut tien : ");
+            foreach (var a in minibank)
+            {
+                Console.WriteLine(a.ToString());
+                Console.WriteLine();
+            }
+            string temp = Console.ReadLine();
+            Console.WriteLine("nhap so tien ban muon rut!!");
+            double res = double.Parse(Console.ReadLine());
+            minibank[FindAccount(minibank, temp)].Withdraw(res);
+            minitransaction.Add(new Transaction("WDRW-201", temp, "WithDraw", res, DateTime.Now, "rut tien tu tai khoan"));
+        }
+
+        public void monthlyinterest(List<Transaction> minitransaction, List<BankAccount> minibank, double interest,double fee)
+        {
+            foreach(var a in minibank)
+            {
+                if(a is IInterestBearing an)
+                {
+                    an.ApplyMonthlyInterest();
+                    minitransaction.Add(new Transaction("ITRS-301", a.number_account, "Monthly Interest", a.ballance * interest, DateTime.Now, "lai suat thang 9"));
+                }else if(a is FeeDeductible fe)
+                {
+                    fe.ApplyMonthlyFee();
+                    minitransaction.Add(new Transaction("FEE-401", a.number_account, "Monthly Fee", fee, DateTime.Now, "phi dich vu thang 9"));
+                }
+            }
+        }
 
     }
 }
