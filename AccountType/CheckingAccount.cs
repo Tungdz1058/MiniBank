@@ -20,6 +20,10 @@ namespace MiniBank.AccountType
         {
             ballance -= fee;
         }
+        public override void Deposit(double amount)
+        {
+            ballance += amount;
+        }
         public override void Withdraw(double amount)
         {
             try
