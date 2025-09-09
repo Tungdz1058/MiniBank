@@ -22,7 +22,6 @@ namespace MiniBank.AccountType
         public void ApplyMonthlyInterest()
         {
             ballance += ballance * annual_interest_rate;
-            Console.WriteLine($"ap dung lai suat thanh cong so du con lai trong tai khoan la {ballance}");
         }
     }
 }
