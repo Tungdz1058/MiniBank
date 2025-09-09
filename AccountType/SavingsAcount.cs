@@ -15,7 +15,10 @@ namespace MiniBank.AccountType
         {
             this.annual_interest_rate = annual_interest_rate;
         }
-
+        public override void Deposit(double amount)
+        {
+            ballance += amount;
+        }
         public void ApplyMonthlyInterest()
         {
             ballance += ballance * annual_interest_rate;
