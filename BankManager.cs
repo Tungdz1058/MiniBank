@@ -6,6 +6,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using MiniBank.AccountType;
+using MiniBank.Exception;
 using MiniBank.Interfaces;
 
 namespace MiniBank
@@ -183,18 +184,77 @@ namespace MiniBank
         {
             foreach(var a in minibank)
             {
-                if(a is IInterestBearing an)
+                try
                 {
-                    an.ApplyMonthlyInterest();
-                    minitransaction.Add(new Transaction("ITRS-301", a.number_account, "Monthly Interest", a.ballance * interest, DateTime.Now, "lai suat thang 9"));
-                }else if(a is FeeDeductible fe)
+                    if (a is IInterestBearing an)
+                    {
+                        an.ApplyMonthlyInterest();
+                        minitransaction.Add(new Transaction("ITRS-301", a.number_account, "Monthly Interest", a.ballance * interest, DateTime.Now, "lai suat thang 9"));
+                    }
+                    else if (a is FeeDeductible fe)
+                    {
+                        fe.ApplyMonthlyFee();
+                        minitransaction.Add(new Transaction("FEE-401", a.number_account, "Monthly Fee", fee, DateTime.Now, "phi dich vu thang 9"));
+                    }
+                }
+                catch(TransactionParseException ex)
                 {
-                    fe.ApplyMonthlyFee();
-                    minitransaction.Add(new Transaction("FEE-401", a.number_account, "Monthly Fee", fee, DateTime.Now, "phi dich vu thang 9"));
+                    Console.WriteLine("Loi : {0}", ex.Message);
+                    throw;
                 }
             }
         }
 
+        //liet ke tai khoan va loc theo loai
+        public void ListAccounts(List<BankAccount> minibank)
+        {
+            List<SavingsAcount> sa = new List<SavingsAcount>();
+            List<CheckingAccount> ca = new List<CheckingAccount>();
+            List<CreditCard> cc = new List<CreditCard>();
+            foreach(var a in minibank)
+            {
+                if (a is SavingsAcount)
+                {
+                    sa.Add((SavingsAcount)a);
+                }
+                else if (a is CheckingAccount)
+                {
+                    ca.Add((CheckingAccount)a);
+                }
+                else cc.Add((CreditCard)a);
+            }
+            Console.WriteLine("Loai tai khoan tiet kiem : ");
+            foreach(var a in sa)
+            {
+                Console.WriteLine(a.ToString());
+                Console.WriteLine();
+            }
+            Console.WriteLine("Loai tai khoan kiem tra : ");
+            foreach (var a in ca)
+            {
+                Console.WriteLine(a.ToString());
+                Console.WriteLine();
+            }
+            Console.WriteLine("Loai tai khoan the ghi no : ");
+            foreach (var a in cc)
+            {
+                Console.WriteLine(a.ToString());
+                Console.WriteLine();
+            }
+        }
+
+        // thong ke
+
+        public void thongke(List<BankAccount> minibank)
+        {
+            minibank.Sort ((m1, m2) => m2.ballance.CompareTo(m1.ballance));
+            Console.WriteLine($"So tai khoan co so du lon nhat la : {minibank[0].number_account} voi so du la : {minibank[0].ballance}");
+            Console.WriteLine($"So tai khoan co so du nho nhat la : {minibank[minibank.Count - 1].number_account} voi so du la : {minibank[minibank.Count - 1].ballance}");
+            foreach(var a in minibank)
+            {
+                Console.WriteLine(a.ToString());
+            }
+        }
     }
 }
 
